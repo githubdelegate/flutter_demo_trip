@@ -1,6 +1,9 @@
+import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/dao/home_dao.dart';
+import 'package:flutter_demo/model/home_model.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
 class HomePage extends StatefulWidget {
@@ -21,6 +24,8 @@ class _HomePageState extends State {
 
   double _appbarOp = 0.0;
 
+  var _homejson = '';
+
   _onScroll(offset) {
     double alpha = offset / APPBAR_SCROLL_OFFSET;
     if (alpha < 0) {
@@ -32,6 +37,26 @@ class _HomePageState extends State {
     setState(() {
       _appbarOp = alpha;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _loadHomeJson();
+  }
+
+  _loadHomeJson() async {
+    try {
+      HomeModel model = await HomeDao.fetch();
+      setState(() {
+        _homejson = json.encode(model);
+      });
+    } catch (e) {
+      setState(() {
+        _homejson = e.toString();
+      });
+    }
   }
 
   @override
@@ -66,7 +91,7 @@ class _HomePageState extends State {
                       ),
                     ),
                     Container(
-                      child: Text("Home"),
+                      child: Text(_homejson),
                       height: 1000,
                     )
                   ],
