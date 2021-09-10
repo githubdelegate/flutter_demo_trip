@@ -3,10 +3,12 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/dao/home_dao.dart';
+import 'package:flutter_demo/model/common_model.dart';
 import 'package:flutter_demo/model/grid_nav_model.dart';
 import 'package:flutter_demo/model/home_model.dart';
 import 'package:flutter_demo/widget/grid_nav.dart';
 import 'package:flutter_demo/widget/local_nav.dart';
+import 'package:flutter_demo/widget/sub_nav.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
 class HomePage extends StatefulWidget {
@@ -30,6 +32,7 @@ class _HomePageState extends State {
   var _homejson = '';
   var _localNavList;
   GridNavModel? gridNavModel;
+  List<CommonModel>? subNavModel;
 
   _onScroll(offset) {
     double alpha = offset / APPBAR_SCROLL_OFFSET;
@@ -57,6 +60,7 @@ class _HomePageState extends State {
         _homejson = json.encode(model);
         _localNavList = model.localNavList;
         gridNavModel = model.gridNav;
+        subNavModel = model.subNavList;
       });
     } catch (e) {
       setState(() {
@@ -100,9 +104,19 @@ class _HomePageState extends State {
                         Padding(
                             child: LocalNav(localNavList: _localNavList),
                             padding: const EdgeInsets.fromLTRB(7, 4, 7, 4)),
+
+                        // 三行卡片
                         Padding(
                             child: GridNav(gridNavModel: gridNavModel),
                             padding: const EdgeInsets.fromLTRB(7, 0, 7, 4)),
+
+                        // 两排列表
+                        Padding(
+                            child: SubNav(
+                              subnavlist: subNavModel,
+                            ),
+                            padding: const EdgeInsets.fromLTRB(7, 0, 7, 4)),
+
                         Container(
                           child: Text(_homejson),
                           height: 1000,
