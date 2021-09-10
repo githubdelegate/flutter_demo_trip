@@ -9,15 +9,15 @@ class WebView extends StatefulWidget {
   final String url;
   final String? statusBarColor;
   final String title;
-  final bool hideAppBar;
+  bool hideAppBar = false;
   final bool backForbid;
 
-  const WebView(
+  WebView(
       {Key? key,
       required this.url,
       this.statusBarColor = 'ffffff',
       required this.title,
-      required this.hideAppBar,
+      this.hideAppBar = false,
       required this.backForbid})
       : super(key: key);
 
@@ -73,11 +73,11 @@ class _WebViewState extends State<WebView> {
 
   @override
   void dispose() {
-    super.dispose();
     _onStateChange.cancel();
     _onHttpError.cancel();
     _onUrlChange.cancel();
     webviewReference.dispose();
+    super.dispose();
   }
 
   @override
@@ -111,27 +111,34 @@ class _WebViewState extends State<WebView> {
   }
 
   Widget _appBar(Color backgroundColor, Color backButtonColor) {
-    if (widget.hideAppBar) {
+    if (widget.hideAppBar == false) {
       return Container(
         color: backgroundColor,
         height: 30,
       );
     }
 
-    return FractionallySizedBox(
-        child: Stack(
-      children: [
-        GestureDetector(
-          child: Container(
-            margin: const EdgeInsets.only(left: 10),
-            child: Icon(Icons.close, color: backButtonColor, size: 26),
+    return Container(
+      color: backgroundColor,
+      padding: const EdgeInsets.fromLTRB(0, 40, 0, 10),
+      child: FractionallySizedBox(
+          child: Stack(
+        children: [
+          GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Container(
+              margin: const EdgeInsets.only(left: 10),
+              child: Icon(Icons.close, color: backButtonColor, size: 26),
+            ),
           ),
-        ),
-        Positioned(
-            child: Center(
-                child: Text(widget.title,
-                    style: TextStyle(color: backButtonColor, fontSize: 20))))
-      ],
-    ));
+          Positioned(
+              child: Center(
+                  child: Text(widget.title,
+                      style: TextStyle(color: backButtonColor, fontSize: 20))))
+        ],
+      )),
+    );
   }
 }
