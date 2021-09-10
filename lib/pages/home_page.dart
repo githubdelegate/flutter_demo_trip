@@ -6,8 +6,10 @@ import 'package:flutter_demo/dao/home_dao.dart';
 import 'package:flutter_demo/model/common_model.dart';
 import 'package:flutter_demo/model/grid_nav_model.dart';
 import 'package:flutter_demo/model/home_model.dart';
+import 'package:flutter_demo/model/sales_box_model.dart';
 import 'package:flutter_demo/widget/grid_nav.dart';
 import 'package:flutter_demo/widget/local_nav.dart';
+import 'package:flutter_demo/widget/sales_box.dart';
 import 'package:flutter_demo/widget/sub_nav.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
@@ -33,6 +35,8 @@ class _HomePageState extends State {
   var _localNavList;
   GridNavModel? gridNavModel;
   List<CommonModel>? subNavModel;
+
+  SalesBoxModel? saleboxModel;
 
   _onScroll(offset) {
     double alpha = offset / APPBAR_SCROLL_OFFSET;
@@ -61,6 +65,7 @@ class _HomePageState extends State {
         _localNavList = model.localNavList;
         gridNavModel = model.gridNav;
         subNavModel = model.subNavList;
+        saleboxModel = model.salesBox;
       });
     } catch (e) {
       setState(() {
@@ -117,10 +122,10 @@ class _HomePageState extends State {
                             ),
                             padding: const EdgeInsets.fromLTRB(7, 0, 7, 4)),
 
-                        Container(
-                          child: Text(_homejson),
-                          height: 1000,
-                        )
+                        //  做下面卡片
+                        Padding(
+                            child: SalesBox(salesBoxModel: saleboxModel),
+                            padding: const EdgeInsets.fromLTRB(7, 0, 7, 4)),
                       ],
                     ))),
             Opacity(
