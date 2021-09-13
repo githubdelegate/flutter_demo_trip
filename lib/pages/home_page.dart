@@ -91,76 +91,77 @@ class _HomePageState extends State {
                     removeTop: true,
                     context: context,
                     child: RefreshIndicator(
-                      child: NotificationListener(
-                          onNotification: (noti) {
-                            if (noti is ScrollUpdateNotification &&
-                                noti.depth == 0) {
-                              print(noti.metrics.pixels);
-                              _onScroll(noti.metrics.pixels);
-                            }
-                            return true;
-                          },
-                          child: ListView(
-                            children: [
-                              Container(
-                                height: 160,
-                                child: Swiper(
-                                  itemCount: bannerList.length,
-                                  autoplay: true,
-                                  itemBuilder: (BuildContext ctx, int idx) {
-                                    return CommonUtil.wrapGesture(
-                                        ctx,
-                                        Image.network(bannerList[idx].icon,
-                                            fit: BoxFit.fill),
-                                        bannerList[idx]);
-                                  },
-                                  pagination: const SwiperPagination(
-                                      alignment: Alignment.bottomCenter),
-                                ),
-                              ),
-                              Padding(
-                                  child: LocalNav(localNavList: _localNavList),
-                                  padding:
-                                      const EdgeInsets.fromLTRB(7, 4, 7, 4)),
-
-                              // 三行卡片
-                              Padding(
-                                  child: GridNav(gridNavModel: gridNavModel),
-                                  padding:
-                                      const EdgeInsets.fromLTRB(7, 0, 7, 4)),
-
-                              // 两排列表
-                              Padding(
-                                  child: SubNav(
-                                    subnavlist: subNavModel,
-                                  ),
-                                  padding:
-                                      const EdgeInsets.fromLTRB(7, 0, 7, 4)),
-
-                              //  做下面卡片
-                              Padding(
-                                  child: SalesBox(salesBoxModel: saleboxModel),
-                                  padding:
-                                      const EdgeInsets.fromLTRB(7, 0, 7, 4)),
-                            ],
-                          )),
+                      child: _listView,
                       onRefresh: _loadHomeJson,
                       color: Colors.red,
                     )),
-                Opacity(
-                    opacity: _appbarOp,
-                    child: Container(
-                      height: 80,
-                      decoration: const BoxDecoration(color: Colors.white),
-                      child: const Center(
-                        child: Padding(
-                            padding: EdgeInsets.only(top: 20),
-                            child: Text('Home')),
-                      ),
-                    )),
+                _appBar
               ],
             ),
             _isLoading,
             true));
+  }
+
+  Widget get _appBar {
+    return Opacity(
+        opacity: _appbarOp,
+        child: Container(
+          height: 80,
+          decoration: const BoxDecoration(color: Colors.white),
+          child: const Center(
+            child:
+                Padding(padding: EdgeInsets.only(top: 20), child: Text('Home')),
+          ),
+        ));
+  }
+
+  Widget get _listView {
+    return NotificationListener(
+        onNotification: (noti) {
+          if (noti is ScrollUpdateNotification && noti.depth == 0) {
+            print(noti.metrics.pixels);
+            _onScroll(noti.metrics.pixels);
+          }
+          return true;
+        },
+        child: ListView(
+          children: [
+            Container(
+              height: 160,
+              child: Swiper(
+                itemCount: bannerList.length,
+                autoplay: true,
+                itemBuilder: (BuildContext ctx, int idx) {
+                  return CommonUtil.wrapGesture(
+                      ctx,
+                      Image.network(bannerList[idx].icon, fit: BoxFit.fill),
+                      bannerList[idx]);
+                },
+                pagination:
+                    const SwiperPagination(alignment: Alignment.bottomCenter),
+              ),
+            ),
+            Padding(
+                child: LocalNav(localNavList: _localNavList),
+                padding: const EdgeInsets.fromLTRB(7, 4, 7, 4)),
+
+            // 三行卡片
+            Padding(
+                child: GridNav(gridNavModel: gridNavModel),
+                padding: const EdgeInsets.fromLTRB(7, 0, 7, 4)),
+
+            // 两排列表
+            Padding(
+                child: SubNav(
+                  subnavlist: subNavModel,
+                ),
+                padding: const EdgeInsets.fromLTRB(7, 0, 7, 4)),
+
+            //  做下面卡片
+            Padding(
+                child: SalesBox(salesBoxModel: saleboxModel),
+                padding: const EdgeInsets.fromLTRB(7, 0, 7, 4)),
+          ],
+        ));
   }
 }

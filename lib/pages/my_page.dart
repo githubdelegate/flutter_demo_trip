@@ -10,6 +10,26 @@ class MyPage extends StatefulWidget {
 class _MyPageState extends State {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: Text("My")));
+    return Scaffold(
+      body: RefreshIndicator(
+          child: NotificationListener(
+              child: ListView(
+            children: [
+              Text("data"),
+              Text("data"),
+              Text("data"),
+              Text("data"),
+              Text("data"),
+              SizedBox(
+                child: Text("data"),
+              )
+            ],
+          )),
+          onRefresh: _loadingView),
+    );
+  }
+
+  Future<Null> _loadingView() async {
+    return null;
   }
 }
