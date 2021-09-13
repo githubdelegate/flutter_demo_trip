@@ -7,7 +7,9 @@ import 'package:flutter_demo/model/common_model.dart';
 import 'package:flutter_demo/model/grid_nav_model.dart';
 import 'package:flutter_demo/model/home_model.dart';
 import 'package:flutter_demo/model/sales_box_model.dart';
+import 'package:flutter_demo/widget/common_util.dart';
 import 'package:flutter_demo/widget/grid_nav.dart';
+import 'package:flutter_demo/widget/loading_container.dart';
 import 'package:flutter_demo/widget/local_nav.dart';
 import 'package:flutter_demo/widget/sales_box.dart';
 import 'package:flutter_demo/widget/sub_nav.dart';
@@ -30,13 +32,13 @@ class _HomePageState extends State {
   ];
 
   double _appbarOp = 0.0;
-
+  bool _isLoading = true;
   var _homejson = '';
   var _localNavList;
   GridNavModel? gridNavModel;
   List<CommonModel>? subNavModel;
-
   SalesBoxModel? saleboxModel;
+  List<CommonModel> bannerList = [];
 
   _onScroll(offset) {
     double alpha = offset / APPBAR_SCROLL_OFFSET;
@@ -57,7 +59,7 @@ class _HomePageState extends State {
     _loadHomeJson();
   }
 
-  _loadHomeJson() async {
+  Future<Void?> _loadHomeJson() async {
     try {
       HomeModel model = await HomeDao.fetch();
       setState(() {
@@ -66,79 +68,99 @@ class _HomePageState extends State {
         gridNavModel = model.gridNav;
         subNavModel = model.subNavList;
         saleboxModel = model.salesBox;
+        bannerList = model.bannerList;
+        _isLoading = false;
       });
     } catch (e) {
       setState(() {
         _homejson = e.toString();
+        _isLoading = false;
       });
     }
+    return null;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: const Color(0xfff2f2f2),
-        body: Stack(
-          children: [
-            MediaQuery.removePadding(
-                removeTop: true,
-                context: context,
-                child: NotificationListener(
-                    onNotification: (noti) {
-                      if (noti is ScrollUpdateNotification && noti.depth == 0) {
-                        print(noti.metrics.pixels);
-                        _onScroll(noti.metrics.pixels);
-                      }
-                      return true;
-                    },
-                    child: ListView(
-                      children: [
-                        Container(
-                          height: 160,
-                          child: Swiper(
-                            itemCount: _imageUrl.length,
-                            autoplay: true,
-                            itemBuilder: (BuildContext ctx, int idx) {
-                              return Image.network(_imageUrl[idx],
-                                  fit: BoxFit.fill);
-                            },
-                            pagination: SwiperPagination(
-                                alignment: Alignment.bottomCenter),
-                          ),
-                        ),
-                        Padding(
-                            child: LocalNav(localNavList: _localNavList),
-                            padding: const EdgeInsets.fromLTRB(7, 4, 7, 4)),
+        body: LoadingContainer(
+            Stack(
+              children: [
+                MediaQuery.removePadding(
+                    removeTop: true,
+                    context: context,
+                    child: RefreshIndicator(
+                      child: NotificationListener(
+                          onNotification: (noti) {
+                            if (noti is ScrollUpdateNotification &&
+                                noti.depth == 0) {
+                              print(noti.metrics.pixels);
+                              _onScroll(noti.metrics.pixels);
+                            }
+                            return true;
+                          },
+                          child: ListView(
+                            children: [
+                              Container(
+                                height: 160,
+                                child: Swiper(
+                                  itemCount: bannerList.length,
+                                  autoplay: true,
+                                  itemBuilder: (BuildContext ctx, int idx) {
+                                    return CommonUtil.wrapGesture(
+                                        ctx,
+                                        Image.network(bannerList[idx].icon,
+                                            fit: BoxFit.fill),
+                                        bannerList[idx]);
+                                  },
+                                  pagination: const SwiperPagination(
+                                      alignment: Alignment.bottomCenter),
+                                ),
+                              ),
+                              Padding(
+                                  child: LocalNav(localNavList: _localNavList),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(7, 4, 7, 4)),
 
-                        // 三行卡片
-                        Padding(
-                            child: GridNav(gridNavModel: gridNavModel),
-                            padding: const EdgeInsets.fromLTRB(7, 0, 7, 4)),
+                              // 三行卡片
+                              Padding(
+                                  child: GridNav(gridNavModel: gridNavModel),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(7, 0, 7, 4)),
 
-                        // 两排列表
-                        Padding(
-                            child: SubNav(
-                              subnavlist: subNavModel,
-                            ),
-                            padding: const EdgeInsets.fromLTRB(7, 0, 7, 4)),
+                              // 两排列表
+                              Padding(
+                                  child: SubNav(
+                                    subnavlist: subNavModel,
+                                  ),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(7, 0, 7, 4)),
 
-                        //  做下面卡片
-                        Padding(
-                            child: SalesBox(salesBoxModel: saleboxModel),
-                            padding: const EdgeInsets.fromLTRB(7, 0, 7, 4)),
-                      ],
-                    ))),
-            Opacity(
-                opacity: _appbarOp,
-                child: Container(
-                  height: 80,
-                  decoration: BoxDecoration(color: Colors.white),
-                  child: Center(
-                    child: Padding(
-                        padding: EdgeInsets.only(top: 20), child: Text('Home')),
-                  ),
-                )),
-          ],
-        ));
+                              //  做下面卡片
+                              Padding(
+                                  child: SalesBox(salesBoxModel: saleboxModel),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(7, 0, 7, 4)),
+                            ],
+                          )),
+                      onRefresh: _loadHomeJson,
+                      color: Colors.red,
+                    )),
+                Opacity(
+                    opacity: _appbarOp,
+                    child: Container(
+                      height: 80,
+                      decoration: const BoxDecoration(color: Colors.white),
+                      child: const Center(
+                        child: Padding(
+                            padding: EdgeInsets.only(top: 20),
+                            child: Text('Home')),
+                      ),
+                    )),
+              ],
+            ),
+            _isLoading,
+            true));
   }
 }

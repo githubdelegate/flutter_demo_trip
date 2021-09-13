@@ -1,11 +1,11 @@
 import 'package:flutter/scheduler.dart';
 
 class CommonModel {
-  final String icon;
-  final String title;
-  final String url;
-  final String statusBarColor;
-  final bool hideAppBar;
+  String icon;
+  String title;
+  String url;
+  String statusBarColor;
+  bool hideAppBar;
 
   CommonModel(
       {this.icon = '',
@@ -16,11 +16,11 @@ class CommonModel {
 
   factory CommonModel.fromJson(Map<String, dynamic> json) {
     return CommonModel(
-        icon: json['icon'],
-        title: json['title'],
-        url: json['url'],
-        statusBarColor: json['statusBarColor'],
-        hideAppBar: json['hideAppBar']);
+        icon: json['icon'] ?? "",
+        title: json['title'] ?? "",
+        url: json['url'] ?? "",
+        statusBarColor: json['statusBarColor'] ?? "",
+        hideAppBar: json['hideAppBar'] ?? true);
   }
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

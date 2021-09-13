@@ -50,3 +50,8 @@ ios/Runner.xcodeproj/project.pbxproj
 ios/build/Pods.build/Release-iphonesimulator/Flutter.build/dgph
 ios/build/Pods.build/Release-iphonesimulator/Pods-Runner.build/dgph
 ios/build/Pods.build/Release-iphonesimulator/flutter_webview_plugin.build/dgph
+ios/Podfile
+ios/Podfile.lock
+ios/Flutter/Debug.xcconfig
+ios/Flutter/Release.xcconfig
+ios/Runner.xcodeproj/project.pbxproj
