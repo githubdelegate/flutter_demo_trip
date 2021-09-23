@@ -3,167 +3,252 @@ import 'package:flutter/material.dart';
 enum SearchBarType { home, normal, homeLight }
 
 class SearchBar extends StatefulWidget {
-  bool enabled = true;
-  bool hideLeft = false;
-  SearchBarType type = SearchBarType.normal;
-  String hint = "";
-  String defaulText = "";
+  final String city;
+  final bool enabled;
+  final bool? hideLeft;
+  final bool autofocus;
+  final SearchBarType? searchBarType;
+  final String? hint; // 默认提示文案
+  final String defaultText;
+  final void Function() leftButtonClick;
+  final void Function() rightButtonClick;
+  final void Function() speakClick;
+  final void Function() inputBoxClick;
+  final ValueChanged<String> onChanged;
 
-  void Function()? leftBtnClick;
-  void Function()? rightBtnClick;
-  void Function()? speackClick;
-  void Function()? inputBoxClick;
-  ValueChanged<String>? onChange;
-
-  SearchBar({
+  const SearchBar({
     Key? key,
+    required this.city,
     this.enabled = true,
-    this.hideLeft = true,
-    this.type = SearchBarType.normal,
-    this.hint = "",
-    this.defaulText = '',
-    this.leftBtnClick,
-    this.rightBtnClick,
-    this.inputBoxClick,
-    this.onChange,
-    this.speackClick,
+    this.hideLeft,
+    this.autofocus = false,
+    this.searchBarType = SearchBarType.normal,
+    this.hint,
+    required this.defaultText,
+    required this.leftButtonClick,
+    required this.rightButtonClick,
+    required this.speakClick,
+    required this.inputBoxClick,
+    required this.onChanged,
   }) : super(key: key);
 
-  // SearchBar({Key? key}) : super(key: key);
-
   @override
-  State<StatefulWidget> createState() {
-    return _SearchBarState();
-  }
+  _SearchBarState createState() => _SearchBarState();
 }
 
 class _SearchBarState extends State<SearchBar> {
-  TextEditingController _controller = TextEditingController();
   bool showClear = false;
+  final TextEditingController _controller = TextEditingController();
+
   @override
   void initState() {
-    if (widget.defaulText != null) {
+    super.initState();
+    _controller.text = widget.defaultText;
+  }
+
+  Color get _homeFontColor {
+    return widget.searchBarType == SearchBarType.homeLight
+        ? Colors.black54
+        : Colors.white;
+  }
+
+  // 输入框内容改变
+  void _onChanged(String text) {
+    if (text.length > 0) {
       setState(() {
-        _controller.text = widget.defaulText;
+        showClear = true;
+      });
+    } else {
+      setState(() {
+        showClear = false;
       });
     }
-
-    super.initState();
+    widget.onChanged(text);
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return isNormalType ? _genNormalSearch() : _genHomeSearch();
-  }
-
-  Widget _genNormalSearch() {
+  Widget get _genNormalSearch {
     return Container(
       child: Row(
         children: [
-          Container(
-            padding: EdgeInsets.fromLTRB(6, 5, 10, 5),
-            child: _wrapTap(
-                Container(
-                  child: widget.hideLeft
-                      ? null
-                      : const Icon(Icons.arrow_back_ios,
-                          color: Colors.grey, size: 26),
-                ),
-                widget.leftBtnClick),
+          _wrapTap(
+            Container(
+              padding: EdgeInsets.fromLTRB(6, 5, 10, 5),
+              child: widget.hideLeft ?? false
+                  ? null
+                  : Icon(
+                      Icons.arrow_back_ios,
+                      color: Colors.grey,
+                      size: 26,
+                    ),
+            ),
+            widget.leftButtonClick,
           ),
-          Expanded(child: _inputBox, flex: 1),
+          Expanded(
+            flex: 1,
+            child: _inputBox,
+          ),
           _wrapTap(
               Container(
-                padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                child: const Text('搜索',
-                    style: TextStyle(color: Colors.blue, fontSize: 17)),
+                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                child: Text(
+                  '搜索',
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontSize: 17,
+                  ),
+                ),
               ),
-              widget.rightBtnClick)
+              widget.rightButtonClick),
         ],
       ),
     );
   }
 
-  Widget _genHomeSearch() {
-    return Container();
+  Widget get _genHomeSearch {
+    return Container(
+      child: Row(
+        children: [
+          _wrapTap(
+            Container(
+              padding: EdgeInsets.fromLTRB(6, 5, 5, 5),
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    widget.city,
+                    style: TextStyle(
+                      color: _homeFontColor,
+                      fontSize: 14,
+                    ),
+                  ),
+                  Icon(
+                    Icons.expand_more,
+                    color: _homeFontColor,
+                    size: 22,
+                  ),
+                ],
+              ),
+            ),
+            widget.leftButtonClick,
+          ),
+          Expanded(
+            flex: 1,
+            child: _inputBox,
+          ),
+          _wrapTap(
+            Container(
+              padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+              child: Icon(
+                Icons.comment,
+                color: _homeFontColor,
+                size: 26,
+              ),
+            ),
+            widget.rightButtonClick,
+          ),
+        ],
+      ),
+    );
   }
 
-  Widget _wrapTap(Widget? child, void Function()? callback) {
+  Widget _wrapTap(Widget child, void Function() callback) {
     return GestureDetector(
-      onTap: callback,
+      onTap: () {
+        callback();
+      },
       child: child,
     );
   }
 
-  bool get isNormalType {
-    return (widget.type == SearchBarType.normal);
-  }
-
-  bool get isHomeType {
-    return (widget.type == SearchBarType.home);
-  }
-
   Widget get _inputBox {
-    Color inputBoxColor = widget.type == SearchBarType.home
-        ? Colors.white
-        : Color(int.parse('0xffededed'));
+    Color inputBoxColor;
+    if (widget.searchBarType == SearchBarType.home) {
+      inputBoxColor = Colors.white;
+    } else {
+      inputBoxColor = Color(int.parse('0xffEDEDED'));
+    }
     return Container(
-      height: 50,
+      height: 30,
       padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
       decoration: BoxDecoration(
-          color: inputBoxColor,
-          borderRadius: BorderRadius.circular(isNormalType ? 5 : 25)),
+        color: inputBoxColor,
+        borderRadius: BorderRadius.circular(
+            widget.searchBarType == SearchBarType.normal ? 5 : 15),
+      ),
       child: Row(
-        children: [
-          Icon(Icons.search,
-              size: 20,
-              color: isNormalType ? const Color(0xffa9a9a9a) : Colors.blue),
+        children: <Widget>[
+          Icon(
+            Icons.search,
+            size: 20,
+            color: widget.searchBarType == SearchBarType.normal
+                ? Color(0xffa9a9a9)
+                : Colors.blue,
+          ),
           Expanded(
-              child: isNormalType
-                  ? TextField(
-                      controller: _controller,
-                      onChanged: widget.onChange,
-                      autofocus: true,
-                      style: const TextStyle(
-                          fontSize: 13,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w300),
-                      decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
-                          border: InputBorder.none,
-                          hintText: widget.hint,
-                          hintStyle: const TextStyle(fontSize: 15)),
-                    )
-                  : _wrapTap(
-                      Text(
-                        widget.defaulText,
-                        style:
-                            const TextStyle(fontSize: 13, color: Colors.grey),
+            flex: 1,
+            child: widget.searchBarType == SearchBarType.normal
+                ? TextField(
+                    controller: _controller,
+                    onChanged: _onChanged,
+                    autofocus: widget.autofocus,
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w300,
+                    ),
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(
+                        left: 5,
+                        bottom: 14,
+                        right: 5,
                       ),
-                      widget.inputBoxClick)),
+                      border: InputBorder.none,
+                      hintText: widget.hint ?? '',
+                      hintStyle: TextStyle(fontSize: 15),
+                    ),
+                  )
+                : _wrapTap(
+                    Container(
+                      child: Text(
+                        widget.defaultText,
+                        style: TextStyle(fontSize: 13, color: Colors.grey),
+                      ),
+                    ),
+                    widget.inputBoxClick,
+                  ),
+          ),
           !showClear
               ? _wrapTap(
-                  Icon(Icons.mic,
-                      size: 22,
-                      color: isNormalType ? Colors.blue : Colors.grey),
-                  widget.speackClick)
+                  Icon(
+                    Icons.mic,
+                    size: 22,
+                    color: widget.searchBarType == SearchBarType.normal
+                        ? Colors.blue
+                        : Colors.grey,
+                  ),
+                  widget.speakClick,
+                )
               : _wrapTap(
-                  const Icon(
+                  Icon(
                     Icons.clear,
                     size: 22,
                     color: Colors.grey,
-                  ), () {
-                  setState(() {
-                    _controller.clear();
-                    _onChange();
-                  });
-                })
+                  ),
+                  () {
+                    setState(() {
+                      _controller.clear();
+                    });
+                    _onChanged('');
+                  },
+                ),
         ],
       ),
     );
   }
 
-  _onChange() {
-    showClear = false;
+  @override
+  Widget build(BuildContext context) {
+    return widget.searchBarType == SearchBarType.normal
+        ? _genNormalSearch
+        : _genHomeSearch;
   }
 }
