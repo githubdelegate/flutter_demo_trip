@@ -53,8 +53,8 @@ class SearchItem {
       type: json['type'],
       price: json['price'],
       star: json['star'],
-      zonename: json['zonename'],
-      districtname: json['districtname']);
+      zonename: json['zonename'] ?? '',
+      districtname: json['districtname'] ?? '');
 
   Map<String, dynamic> toJson() => {
         'word': word,

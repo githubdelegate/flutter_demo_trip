@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_demo/model/home_model.dart';
-import 'package:http/http.dart' as http;
+// import 'package:http/http.dart' as http;
 
 const HomeDaoURL = "http://www.devio.org/io/flutter_app/json/home_page.json";
 
