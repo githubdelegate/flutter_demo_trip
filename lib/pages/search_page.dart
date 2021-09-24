@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/dao/search_dao.dart';
 import 'package:flutter_demo/model/search_model.dart';
+import 'package:flutter_demo/pages/speak_page.dart';
 import 'package:flutter_demo/widget/search_bar.dart';
 
 const types = [
@@ -46,6 +47,9 @@ class _SearchPageState extends State<SearchPage> {
   @override
   void initState() {
     super.initState();
+    if (widget.keyword.isEmpty == false) {
+      _onTxtChange(widget.keyword);
+    }
   }
 
   @override
@@ -110,7 +114,9 @@ class _SearchPageState extends State<SearchPage> {
   void _onTxtChange(String txt) async {
     keyword = txt;
     if (txt.isEmpty) {
-      setState(() {});
+      setState(() {
+        searchModel = null;
+      });
       return;
     }
 
@@ -126,7 +132,10 @@ class _SearchPageState extends State<SearchPage> {
     }
   }
 
-  _jump2Speak() {}
+  _jump2Speak() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => SpeakPage()));
+  }
 
   Widget get _appBar {
     return Column(
