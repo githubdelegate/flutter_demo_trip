@@ -36,54 +36,58 @@ class _SpeakPageState extends State<SpeakPage>
   }
 
   Widget get _bottomItem {
-    return FractionallySizedBox(
-      widthFactor: 1,
-      child: Stack(
-        children: [
-          GestureDetector(
-            onTapDown: (e) {
-              _speakStart();
-            },
-            onTapUp: (e) {
-              _speakStop();
-            },
-            onTapCancel: () {
-              _speakStop();
-            },
-            child: Center(
-              child: Column(
-                children: [
-                  Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Text(speakTips,
-                          style: TextStyle(fontSize: 12, color: Colors.blue))),
-                  Stack(
-                    children: [
-                      Container(
-                        height: micSize,
-                        width: micSize,
-                      ),
-                      Center(
-                          child: AnimatedMic(
-                        animation: animation,
-                      ))
-                    ],
-                  )
-                ],
+    return Container(
+      decoration: const BoxDecoration(color: Colors.transparent),
+      child: FractionallySizedBox(
+        widthFactor: 1,
+        child: Stack(
+          children: [
+            GestureDetector(
+              onTapDown: (e) {
+                _speakStart();
+              },
+              onTapUp: (e) {
+                _speakStop();
+              },
+              onTapCancel: () {
+                _speakStop();
+              },
+              child: Center(
+                child: Column(
+                  children: [
+                    Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Text(speakTips,
+                            style:
+                                TextStyle(fontSize: 12, color: Colors.blue))),
+                    Stack(
+                      children: [
+                        Container(
+                          height: micSize,
+                          width: micSize,
+                        ),
+                        Center(
+                            child: AnimatedMic(
+                          animation: animation,
+                        ))
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-          Positioned(
-            right: 0,
-            bottom: 20,
-            child: GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: const Icon(Icons.close, size: 30, color: Colors.grey),
-            ),
-          )
-        ],
+            Positioned(
+              right: 0,
+              bottom: 20,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: const Icon(Icons.close, size: 30, color: Colors.grey),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -98,6 +102,9 @@ class _SpeakPageState extends State<SpeakPage>
   _speakStop() {
     _aniCtl.reset();
     _aniCtl.stop();
+    setState(() {
+      speakTips = "长按说";
+    });
   }
 
   @override
