@@ -19,7 +19,6 @@ class _HomePageRouteState extends State<HomePageRoute> {
   void initState() {
     super.initState();
 
-    HomeDao.get();
     // _tabController = TabController(length: _tabs.length, vsync: this);
   }
 
@@ -41,10 +40,6 @@ class _HomePageRouteState extends State<HomePageRoute> {
                   children:
                       _tabs.map((e) => const HomeCategoryPageRoute()).toList()),
             ),
-            Image.asset(
-              'images/avatar.png',
-              width: 50,
-            )
           ],
         ),
       ),
