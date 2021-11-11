@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:new_fl/dao/home_dao.dart';
 import 'package:new_fl/pages/home_category_page.dart';
 import 'package:new_fl/util/color.dart';
 import 'package:new_fl/widget/top_navigator_bar.dart';
@@ -17,6 +18,8 @@ class _HomePageRouteState extends State<HomePageRoute> {
   @override
   void initState() {
     super.initState();
+
+    HomeDao.get();
     // _tabController = TabController(length: _tabs.length, vsync: this);
   }
 
@@ -35,7 +38,8 @@ class _HomePageRouteState extends State<HomePageRoute> {
             Flexible(
               child: TabBarView(
                   // controller: _tabController,
-                  children: _tabs.map((e) => HomeCategoryPageRoute()).toList()),
+                  children:
+                      _tabs.map((e) => const HomeCategoryPageRoute()).toList()),
             ),
             Image.asset(
               'images/avatar.png',

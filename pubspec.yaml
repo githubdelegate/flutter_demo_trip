@@ -32,6 +32,7 @@ dependencies:
 
 
   flutter_statusbar_manager: ^2.0.0
+  dio: ^4.0.1
 
 
   # The following adds the Cupertino Icons font to your application.
