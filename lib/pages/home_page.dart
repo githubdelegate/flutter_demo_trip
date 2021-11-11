@@ -10,45 +10,68 @@ class HomePageRoute extends StatefulWidget {
   _HomePageRouteState createState() => _HomePageRouteState();
 }
 
-class _HomePageRouteState extends State<HomePageRoute>
-    with SingleTickerProviderStateMixin {
-  List _tabs = ['推荐', '热门', '动画', '游戏', '科技', '知识', '运动'];
-  late TabController _tabController;
+class _HomePageRouteState extends State<HomePageRoute> {
+  final List _tabs = ['推荐', '热门', '动画', '游戏', '科技', '知识', '运动'];
+  // late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: _tabs.length, vsync: this);
+    // _tabController = TabController(length: _tabs.length, vsync: this);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          TopNavigationBar(child: _appBar()),
-          Container(
-            child: _tabBar(),
-            color: Colors.white,
-          ),
-          Flexible(
-            child: TabBarView(
-                controller: _tabController,
-                children: _tabs.map((e) => HomeCategoryPageRoute()).toList()),
-          ),
-          Image.asset(
-            'images/avatar.png',
-            width: 50,
-          )
-        ],
+    return DefaultTabController(
+      length: _tabs.length,
+      child: Scaffold(
+        body: Column(
+          children: [
+            TopNavigationBar(child: _appBar()),
+            Container(
+              child: _tabBar(),
+              color: Colors.white,
+            ),
+            Flexible(
+              child: TabBarView(
+                  // controller: _tabController,
+                  children: _tabs.map((e) => HomeCategoryPageRoute()).toList()),
+            ),
+            Image.asset(
+              'images/avatar.png',
+              width: 50,
+            )
+          ],
+        ),
       ),
     );
+
+    // return Scaffold(
+    //   body: Column(
+    //     children: [
+    //       TopNavigationBar(child: _appBar()),
+    //       Container(
+    //         child: _tabBar(),
+    //         color: Colors.white,
+    //       ),
+    //       Flexible(
+    //         child: TabBarView(
+    //             controller: _tabController,
+    //             children: _tabs.map((e) => HomeCategoryPageRoute()).toList()),
+    //       ),
+    //       Image.asset(
+    //         'images/avatar.png',
+    //         width: 50,
+    //       )
+    //     ],
+    //   ),
+    // );
   }
 
   // 分类tab
   TabBar _tabBar() {
     return TabBar(
-      controller: _tabController,
+      // controller: _tabController,
       isScrollable: true,
       labelColor: Colors.black,
       indicator: const UnderlineTabIndicator(
@@ -57,10 +80,10 @@ class _HomePageRouteState extends State<HomePageRoute>
       tabs: _tabs
           .map((e) => Tab(
                   child: Padding(
-                padding: EdgeInsets.only(left: 5, right: 5),
+                padding: const EdgeInsets.only(left: 5, right: 5),
                 child: Text(
                   e,
-                  style: TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 16),
                 ),
               )))
           .toList(),
