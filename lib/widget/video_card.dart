@@ -31,9 +31,19 @@ class VideoCard extends StatelessWidget {
   Widget _itemImage() {
     return Stack(
       children: [
-        Image.network(
-          model.pic,
+        Container(
           height: 120,
+          color: Colors.red,
+        ),
+        Positioned(
+          left: 0,
+          top: 0,
+          right: 0,
+          bottom: 0,
+          child: Image.network(
+            model.pic,
+            height: 120,
+          ),
         ),
         Positioned(
           left: 0,
@@ -99,7 +109,7 @@ class VideoCard extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: TextStyle(fontSize: 12, color: Colors.black87),
           ),
-          // _owner()
+          _owner()
         ],
       ),
     ));

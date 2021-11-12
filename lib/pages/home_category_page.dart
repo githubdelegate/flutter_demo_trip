@@ -33,24 +33,23 @@ class _HomeCategoryPageRouteState extends State<HomeCategoryPageRoute> {
         removeTop: true,
         context: context,
         child: GridView.builder(
-            gridDelegate:
-                SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2, childAspectRatio: 0.98),
             itemCount: _videos.length,
+            shrinkWrap: true,
             itemBuilder: (context, idx) {
               return VideoCard(model: _videos[idx]);
-            })
-        // StaggeredGridView.countBuilder(
-        //     physics: const AlwaysScrollableScrollPhysics(),
-        //     padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-        //     crossAxisCount: 2,
-        //     itemCount: _videos.length,
-        //     itemBuilder: (BuildContext context, int index) {
-        //       return VideoCard(model: _videos[index]);
-        //     },
-        //     staggeredTileBuilder: (int index) {
-        //       return const StaggeredTile.fit(1);
-        //     }
-        //     )
-        );
+            }));
+    // StaggeredGridView.countBuilder(
+    //     physics: const AlwaysScrollableScrollPhysics(),
+    //     padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+    //     crossAxisCount: 2,
+    //     itemCount: _videos.length,
+    //     itemBuilder: (BuildContext context, int index) {
+    //       return VideoCard(model: _videos[index]);
+    //     },
+    //     staggeredTileBuilder: (int index) {
+    //       return const StaggeredTile.fit(1);
+    //     }));
   }
 }
