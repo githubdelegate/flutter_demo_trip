@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:new_fl/dao/home_dao.dart';
 import 'package:new_fl/pages/home_category_page.dart';
 import 'package:new_fl/util/color.dart';
+import 'package:new_fl/widget/loading.dart';
 import 'package:new_fl/widget/top_navigator_bar.dart';
 
 class HomePageRoute extends StatefulWidget {
@@ -14,11 +15,16 @@ class HomePageRoute extends StatefulWidget {
 class _HomePageRouteState extends State<HomePageRoute> {
   final List _tabs = ['推荐', '热门', '动画', '游戏', '科技', '知识', '运动'];
   // late TabController _tabController;
-
+  bool _isloding = true;
   @override
   void initState() {
     super.initState();
 
+    Future.delayed(const Duration(seconds: 5)).then((value) {
+      setState(() {
+        _isloding = false;
+      });
+    });
     // _tabController = TabController(length: _tabs.length, vsync: this);
   }
 
@@ -27,7 +33,9 @@ class _HomePageRouteState extends State<HomePageRoute> {
     return DefaultTabController(
       length: _tabs.length,
       child: Scaffold(
-        body: Column(
+          body: LoadingContainer(
+        isLoading: _isloding,
+        child: Column(
           children: [
             TopNavigationBar(child: _appBar()),
             Container(
@@ -42,7 +50,7 @@ class _HomePageRouteState extends State<HomePageRoute> {
             ),
           ],
         ),
-      ),
+      )),
     );
 
     // return Scaffold(
