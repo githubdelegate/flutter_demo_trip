@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:new_fl/models/video_model.dart';
 import 'package:new_fl/util/format_util.dart';
+import 'package:new_fl/widget/placeholder_image.dart';
 
 class VideoCard extends StatelessWidget {
   const VideoCard({Key? key, required this.model}) : super(key: key);
@@ -36,15 +37,11 @@ class VideoCard extends StatelessWidget {
           color: Colors.red,
         ),
         Positioned(
-          left: 0,
-          top: 0,
-          right: 0,
-          bottom: 0,
-          child: Image.network(
-            model.pic,
-            height: 120,
-          ),
-        ),
+            left: 0,
+            top: 0,
+            right: 0,
+            bottom: 0,
+            child: cachedPlaceholderImage(model.pic, h: 120)),
         Positioned(
           left: 0,
           right: 0,
