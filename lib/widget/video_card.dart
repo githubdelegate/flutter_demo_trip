@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:new_fl/models/video_model.dart';
+import 'package:new_fl/pages/video_detail_page.dart';
 import 'package:new_fl/util/format_util.dart';
 import 'package:new_fl/widget/placeholder_image.dart';
 
@@ -13,6 +14,9 @@ class VideoCard extends StatelessWidget {
     return InkWell(
       onTap: () {
         print(' tap video ${model.shortLink}');
+        Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
+          return VideoPlayRoute(model: model);
+        }));
       },
       child: SizedBox(
         height: 300,
@@ -47,8 +51,9 @@ class VideoCard extends StatelessWidget {
           right: 0,
           bottom: 0,
           child: Container(
-            padding: EdgeInsets.only(left: 8, right: 8, bottom: 3, top: 5),
-            decoration: BoxDecoration(
+            padding:
+                const EdgeInsets.only(left: 8, right: 8, bottom: 3, top: 5),
+            decoration: const BoxDecoration(
                 gradient: LinearGradient(
                     colors: [Colors.black54, Colors.transparent],
                     begin: Alignment.bottomCenter,
@@ -93,8 +98,7 @@ class VideoCard extends StatelessWidget {
   }
 
   Widget _infoTxt() {
-    return Expanded(
-        child: Container(
+    return Container(
       padding: EdgeInsets.only(top: 5, left: 8, right: 8, bottom: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,7 +113,24 @@ class VideoCard extends StatelessWidget {
           _owner()
         ],
       ),
-    ));
+    );
+    // return Expanded(
+    //     child: Container(
+    //   padding: EdgeInsets.only(top: 5, left: 8, right: 8, bottom: 5),
+    //   child: Column(
+    //     crossAxisAlignment: CrossAxisAlignment.start,
+    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //     children: [
+    //       Text(
+    //         model.title,
+    //         maxLines: 2,
+    //         overflow: TextOverflow.ellipsis,
+    //         style: TextStyle(fontSize: 12, color: Colors.black87),
+    //       ),
+    //       _owner()
+    //     ],
+    //   ),
+    // ));
   }
 
   Widget _owner() {
