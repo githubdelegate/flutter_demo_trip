@@ -106,7 +106,7 @@ class _ExpandVideoInfoContentState extends State<ExpandVideoInfoContent>
         child: textW,
         builder: (ctx, child) {
           return Align(
-            heightFactor: _curvedAnimation.value,
+            heightFactor: _curvedAnimation.value, // 这个value 都是可以
             alignment: Alignment.topCenter,
             child: Container(
               alignment: Alignment.topLeft,

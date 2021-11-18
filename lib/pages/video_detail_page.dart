@@ -6,6 +6,7 @@ import 'package:new_fl/util/color.dart';
 import 'package:new_fl/widget/bi_tabbar.dart';
 import 'package:new_fl/widget/expand_video_content.dart';
 import 'package:new_fl/widget/top_navigator_bar.dart';
+import 'package:new_fl/widget/video_detail_tool_view.dart';
 import 'package:new_fl/widget/video_list_header.dart';
 import 'package:new_fl/widget/video_view.dart';
 
@@ -104,15 +105,8 @@ class _VideoPlayRouteState extends State<VideoPlayRoute>
         owner: widget.model.owner!,
       ),
       ExpandVideoInfoContent(model: widget.model),
-      Container(
-        color: Colors.blue,
-        height: 100,
-      )
+      VideoDetailToolView()
     ]);
-  }
-
-  Widget _titleInfo() {
-    return Container();
   }
 
   /// 评论列表
