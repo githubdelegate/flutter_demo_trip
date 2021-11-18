@@ -12,7 +12,7 @@ Widget verticalIconText(IconData? icon,
           color: cor,
           size: 20,
         ),
-      biSpace(5),
+      biSpace(height: 5),
       Text(
         txt ??= '',
         style: const TextStyle(color: defalutCor, fontSize: 12),
@@ -22,9 +22,10 @@ Widget verticalIconText(IconData? icon,
 }
 
 /// 当做空间距 padding
-Widget biSpace(double height) {
+Widget biSpace({double height = 0, double wid = 0}) {
   return SizedBox(
     height: height,
+    width: wid,
   );
 }
 

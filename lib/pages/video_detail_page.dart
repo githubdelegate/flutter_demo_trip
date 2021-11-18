@@ -7,6 +7,7 @@ import 'package:new_fl/widget/bi_tabbar.dart';
 import 'package:new_fl/widget/expand_video_content.dart';
 import 'package:new_fl/widget/top_navigator_bar.dart';
 import 'package:new_fl/widget/video_detail_tool_view.dart';
+import 'package:new_fl/widget/video_large_image.dart';
 import 'package:new_fl/widget/video_list_header.dart';
 import 'package:new_fl/widget/video_view.dart';
 
@@ -105,8 +106,14 @@ class _VideoPlayRouteState extends State<VideoPlayRoute>
         owner: widget.model.owner!,
       ),
       ExpandVideoInfoContent(model: widget.model),
-      VideoDetailToolView()
+      VideoDetailToolView(),
+      _buildVideoList()
     ]);
+  }
+
+  /// 关联视频列表
+  _buildVideoList() {
+    return VideoLargeImageCard(model: widget.model);
   }
 
   /// 评论列表

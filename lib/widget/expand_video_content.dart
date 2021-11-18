@@ -76,10 +76,12 @@ class _ExpandVideoInfoContentState extends State<ExpandVideoInfoContent>
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            widget.model.title,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(fontSize: 18, color: Colors.black87),
+          Expanded(
+            child: Text(
+              widget.model.title,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(fontSize: 18, color: Colors.black87),
+            ),
           ),
           Icon(
             isExpanded ? Icons.expand_more : Icons.expand_less,
