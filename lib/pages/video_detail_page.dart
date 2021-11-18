@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:new_fl/dao/home_dao.dart';
 import 'package:new_fl/dao/video_dao.dart';
 import 'package:new_fl/models/video_detail_model.dart';
 import 'package:new_fl/models/video_model.dart';
@@ -27,11 +28,14 @@ class _VideoPlayRouteState extends State<VideoPlayRoute>
   final List<String> _tabs = ['简介', '评论1000'];
   late TabController _tabController;
 
+  List<VideoModel> _videoList = [];
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: _tabs.length, vsync: this);
     _loadData();
+    _loadMoreVideo();
   }
 
   _loadData() async {
@@ -107,13 +111,23 @@ class _VideoPlayRouteState extends State<VideoPlayRoute>
       ),
       ExpandVideoInfoContent(model: widget.model),
       VideoDetailToolView(),
-      _buildVideoList()
+      ..._buildVideoList()
     ]);
   }
 
   /// 关联视频列表
   _buildVideoList() {
-    return VideoLargeImageCard(model: widget.model);
+    return _videoList
+        .map((model) => VideoLargeImageCard(model: model))
+        .toList();
+    // return VideoLargeImageCard(model: widget.model);
+  }
+
+  _loadMoreVideo() async {
+    var model = await HomeDao.get(aid: widget.model.aid);
+    setState(() {
+      _videoList = model.data;
+    });
   }
 
   /// 评论列表

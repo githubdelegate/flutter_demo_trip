@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:new_fl/models/video_model.dart';
+import 'package:new_fl/pages/video_detail_page.dart';
 import 'package:new_fl/util/color.dart';
 import 'package:new_fl/util/view_util.dart';
 
@@ -10,7 +11,11 @@ class VideoLargeImageCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
+          return VideoPlayRoute(model: model);
+        }));
+      },
       child: Container(
         padding: EdgeInsets.only(left: 15, right: 15, bottom: 5),
         height: 106,
