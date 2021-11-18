@@ -4,7 +4,9 @@ import 'package:new_fl/models/video_detail_model.dart';
 import 'package:new_fl/models/video_model.dart';
 import 'package:new_fl/util/color.dart';
 import 'package:new_fl/widget/bi_tabbar.dart';
+import 'package:new_fl/widget/expand_video_content.dart';
 import 'package:new_fl/widget/top_navigator_bar.dart';
+import 'package:new_fl/widget/video_list_header.dart';
 import 'package:new_fl/widget/video_view.dart';
 
 class VideoPlayRoute extends StatefulWidget {
@@ -88,6 +90,7 @@ class _VideoPlayRouteState extends State<VideoPlayRoute>
 
   /// 创建两个tabview
   Widget _buildTabView() {
+    // ExpansionTile
     return Flexible(
         child: TabBarView(
             controller: _tabController,
@@ -97,50 +100,15 @@ class _VideoPlayRouteState extends State<VideoPlayRoute>
   /// 作者相关列表
   Widget _authorListView() {
     return ListView(children: [
-      _authorInfo(),
-      _titleInfo(),
+      VideoListHeader(
+        owner: widget.model.owner!,
+      ),
+      ExpandVideoInfoContent(model: widget.model),
+      Container(
+        color: Colors.blue,
+        height: 100,
+      )
     ]);
-  }
-
-  /// 作者头部信息
-  Widget _authorInfo() {
-    return Padding(
-        padding: EdgeInsets.only(left: 15, right: 15, top: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ClipOval(
-                  child: Image.network(
-                    widget.model.owner!.face,
-                    height: 30,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 5),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.model.owner!.name,
-                        style: const TextStyle(fontSize: 16, color: primaryCor),
-                      ),
-                      Text('${widget.model.owner!.mid}粉丝',
-                          style: TextStyle(fontSize: 11, color: defalutCor)),
-                    ],
-                  ),
-                )
-              ],
-            ),
-            MaterialButton(
-              onPressed: () {},
-              child: const Text('+ 关注', style: TextStyle(color: Colors.white)),
-              color: primaryCor,
-            ),
-          ],
-        ));
   }
 
   Widget _titleInfo() {

@@ -23,3 +23,24 @@ const MaterialColor primaryCor = const MaterialColor(
 );
 
 const MaterialColor defalutCor = Colors.grey;
+
+/// 简单 图标文字组合
+Widget simpleIconText(IconData? icon, String txt) {
+  return Padding(
+      padding: const EdgeInsets.only(left: 5, right: 5),
+      child: Row(
+        children: [
+          if (icon != null)
+            Icon(
+              icon,
+              size: 10,
+              color: defalutCor,
+            ),
+          const Padding(padding: EdgeInsets.only(left: 2)),
+          Text(
+            txt,
+            style: const TextStyle(fontSize: 10, color: defalutCor),
+          )
+        ],
+      ));
+}
