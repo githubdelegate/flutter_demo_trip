@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:new_fl/core/bi_base_tab_state.dart';
+import 'package:new_fl/dao/home_dao.dart';
+import 'package:new_fl/models/video_model.dart';
+import 'package:new_fl/pages/rank_tab_page.dart';
 import 'package:new_fl/util/view_util.dart';
 import 'package:new_fl/widget/bi_tabbar.dart';
 import 'package:new_fl/widget/top_navigator_bar.dart';
+import 'package:new_fl/widget/video_large_image.dart';
 
+/// rank 页面
 class RankPageRoute extends StatefulWidget {
   RankPageRoute({Key? key}) : super(key: key);
 
@@ -12,7 +18,7 @@ class RankPageRoute extends StatefulWidget {
 
 class _RankPageRouteState extends State<RankPageRoute>
     with SingleTickerProviderStateMixin {
-  List<String> _tabs = ['最新', '最热', '排名'];
+  final List<String> _tabs = ['最新', '最热', '排名'];
   late TabController _tabController;
   @override
   void initState() {
@@ -30,17 +36,9 @@ class _RankPageRouteState extends State<RankPageRoute>
 
   _buildTabView() {
     return Flexible(
-      child: TabBarView(controller: _tabController, children: [
-        Center(
-          child: Text('xxxx'),
-        ),
-        Center(
-          child: Text('xxxx'),
-        ),
-        Center(
-          child: Text('xxxx'),
-        )
-      ]),
+      child: TabBarView(
+          controller: _tabController,
+          children: _tabs.map((e) => RankTabRoute()).toList()),
     );
   }
 

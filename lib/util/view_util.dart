@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:new_fl/util/color.dart';
 
 /// 垂直的图标 文字
@@ -48,4 +49,20 @@ bottomShadow() {
       spreadRadius: 1,
     ),
   ]);
+}
+
+/// 显示错误提示
+showErrorToast(String e) {
+  Fluttertoast.showToast(
+      msg: e,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.CENTER,
+      backgroundColor: Colors.red,
+      textColor: Colors.white);
+}
+
+/// 显示基本提示
+showToast(String msg) {
+  Fluttertoast.showToast(
+      msg: msg, toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.CENTER);
 }
