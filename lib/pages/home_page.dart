@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:new_fl/dao/home_dao.dart';
 import 'package:new_fl/pages/home_category_page.dart';
 import 'package:new_fl/util/color.dart';
+import 'package:new_fl/util/view_util.dart';
 import 'package:new_fl/widget/loading.dart';
 import 'package:new_fl/widget/top_navigator_bar.dart';
 
@@ -20,7 +21,7 @@ class _HomePageRouteState extends State<HomePageRoute> {
   void initState() {
     super.initState();
 
-    Future.delayed(const Duration(seconds: 5)).then((value) {
+    Future.delayed(const Duration(seconds: 1)).then((value) {
       setState(() {
         _isloding = false;
       });
@@ -39,8 +40,8 @@ class _HomePageRouteState extends State<HomePageRoute> {
           children: [
             TopNavigationBar(child: _appBar()),
             Container(
+              decoration: bottomShadow(),
               child: _tabBar(),
-              color: Colors.white,
             ),
             Flexible(
               child: TabBarView(

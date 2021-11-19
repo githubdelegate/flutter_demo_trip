@@ -37,3 +37,15 @@ borderLine({bottom: true, top: true}) {
     top: top ? side : BorderSide.none,
   );
 }
+
+/// 底部阴影效果
+bottomShadow() {
+  return const BoxDecoration(color: Colors.white, boxShadow: [
+    BoxShadow(
+      color: Colors.black12,
+      offset: Offset(0, 5),
+      blurRadius: 5,
+      spreadRadius: 1,
+    ),
+  ]);
+}

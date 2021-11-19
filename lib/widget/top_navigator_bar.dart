@@ -23,6 +23,7 @@ class _TopNavigationBarState extends State<TopNavigationBar> {
     FlutterStatusbarManager.setStyle(StatusBarStyle.LIGHT_CONTENT);
 
     return Container(
+      alignment: Alignment.center,
       width: MediaQuery.of(context).size.width,
       height: widget.height + top,
       child: widget.child,
