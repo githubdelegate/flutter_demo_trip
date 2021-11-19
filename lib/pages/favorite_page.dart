@@ -14,12 +14,10 @@ class FavoritePageRoute extends StatefulWidget {
 class _FavorPageRouteState extends State<FavoritePageRoute>
     with SingleTickerProviderStateMixin {
   final List<String> _tabs = ['收藏'];
-  late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: _tabs.length, vsync: this);
   }
 
   @override
